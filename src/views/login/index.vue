@@ -36,6 +36,7 @@
       </el-form-item>
 
       <el-button
+        :loading="loading"
         type="primary"
         style="width: 100%; margin-bottom: 30px"
         class="loginBtn"
@@ -64,6 +65,7 @@ export default {
       return callback(new Error('手机号格式不正确！'))
     }
     return {
+      loading: false,
       passwordType: 'password',
       loginForm: {
         mobile: '13800000002',
@@ -103,10 +105,14 @@ export default {
     // 登录
     async login() {
       try {
+        this.loading = true
         await this.$refs.loginForm.validate()
-        // 提交数据的操作
+        await this.$store.dispatch('user/login', this.loginForm)
+        this.$router.push('/')
       } catch (error) {
         console.log(error)
+      } finally {
+        this.loading = false
       }
     }
   }
