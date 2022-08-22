@@ -56,8 +56,13 @@
 </template>
 
 <script>
-import { getDeaprtments, addDepartment } from '@/api/departments'
+import {
+  getDeaprtments,
+  addDepartment,
+  getDeaprtDetalis
+} from '@/api/departments'
 import { getEmployeesSimple } from '@/api/employees'
+import { editDeaprtDetalis } from '@/api/departments'
 export default {
   props: {
     showDialog: {
@@ -74,9 +79,21 @@ export default {
     // 定义名称校验规则
     const checkNameRepeat = async(rule, value, callback) => {
       const { depts } = await getDeaprtments()
-      const isRepeat = depts
-        .filter((item) => item.pid === this.nodeData.id)
-        .some((item) => item.name === value)
+      let isRepeat = false
+      if (this.formData.id) {
+        // 编辑模式
+        isRepeat = depts
+          .filter(
+            (item) =>
+              item.id !== this.nodeData.id && item.pid === this.nodeData.pid
+          )
+          .some((item) => item.name === value)
+      } else {
+        // 添加模式
+        isRepeat = depts
+          .filter((item) => item.pid === this.nodeData.id)
+          .some((item) => item.name === value)
+      }
       isRepeat
         ? callback(new Error(`同级部门下已有${value}部门了`))
         : callback()
@@ -84,7 +101,14 @@ export default {
     // 定义 code 校验规则
     const checkCodeRepeat = async(rule, value, callback) => {
       const { depts } = await getDeaprtments()
-      const isRepeat = depts.some((item) => item.code === value && value)
+      let isRepeat = false
+      if (this.formData.id) {
+        isRepeat = depts
+          .filter((item) => item.id !== this.formData.id)
+          .some((item) => item.code === value && value)
+      } else {
+        isRepeat = depts.some((item) => item.code === value && value)
+      }
       isRepeat
         ? callback(new Error(`组织架构中已经有部门使用${value}编码`))
         : callback()
@@ -121,23 +145,40 @@ export default {
   },
   computed: {
     showTitle() {
-      return this.formData.id ? '新增部门' : '添加子部门'
+      return this.formData.id ? '编辑部门' : '添加子部门'
     }
   },
   methods: {
+    // 获取部门详情
+    // 因为父组件调用子组件的方法 先设置了 node 数据 直接调用方法
+    // props 传值是异步的
+    async getDeaprtDetalis(id) {
+      this.formData = await getDeaprtDetalis(id)
+    },
+    // 获取部门简单数据列表
     async getEmployeesSimple() {
       this.peoples = await getEmployeesSimple()
     },
     // 确定提交
-    btnOK() {
-      this.$refs.deptForm.validate(async(isOK) => {
-        if (isOK) {
+    async btnOK() {
+      try {
+        await this.$refs.deptForm.validate()
+        // 区分场景
+        if (this.formData.id) {
+          // 编辑数据
+          await editDeaprtDetalis({ ...this.formData })
+          this.$message.success('编辑成功！')
+        } else {
+          // 新增数据
           await addDepartment({ ...this.formData, pid: this.nodeData.id })
-          this.$emit('addDept')
           this.$message.success('添加成功！')
-          this.$emit('update:showDialog', false)
         }
-      })
+        this.$emit('addDept')
+        this.$emit('update:showDialog', false)
+      } catch (error) {
+        console.log(error)
+        this.$message.success('添加失败！')
+      }
     },
     // 取消按钮
     bttnCancel() {

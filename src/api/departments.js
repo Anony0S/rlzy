@@ -21,3 +21,17 @@ export const addDepartment = (data) =>
     url: '/company/department',
     data
   })
+
+// 获取部门详情
+export const getDeaprtDetalis = (id) =>
+  request({
+    url: `/company/department/${id}`
+  })
+
+// 根据ID修改部门详情
+export const editDeaprtDetalis = (data) =>
+  request({
+    method: 'PUT',
+    url: `/company/department/${data.id}`,
+    data
+  })

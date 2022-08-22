@@ -18,6 +18,7 @@
       </el-tree>
     </el-card>
     <AddDept
+      ref="addDept"
       :show-dialog.sync="showDialog"
       :node-data="nodeData"
       @addDept="getDeaprtments"
@@ -43,8 +44,9 @@ export default {
       },
       // 头部数据
       company: {},
-      showDialog: false,
-      nodeData: {}
+      // 记录当前点击的节点
+      nodeData: {},
+      showDialog: false
     }
   },
   created() {
@@ -67,6 +69,8 @@ export default {
     editDept(node) {
       this.showDialog = true
       this.nodeData = node
+      // 调用子节点方法获取部门详情
+      this.$refs.addDept.getDeaprtDetalis(node.id)
     }
   }
 }
