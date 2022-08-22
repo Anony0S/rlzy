@@ -20,7 +20,14 @@
           v-model="formData.manager"
           placeholder="请选择负责人"
           style="width: 80%"
-        />
+          @focus="getEmployeesSimple"
+        >
+          <el-option
+            v-for="item in peoples"
+            :key="item.id"
+            :label="item.username"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="部门介绍" prop="introduce">
         <el-input
@@ -44,6 +51,7 @@
 
 <script>
 import { getDeaprtments } from '@/api/departments'
+import { getEmployeesSimple } from '@/api/employees'
 export default {
   props: {
     showDialog: {
@@ -100,7 +108,14 @@ export default {
           { required: true, trigger: 'blur', message: '部门介绍为必填项!' },
           { min: 1, max: 300, trigger: 'blur', message: '请输入1-300个字符!' }
         ]
-      }
+      },
+      // 员工简单数据列表
+      peoples: []
+    }
+  },
+  methods: {
+    async getEmployeesSimple() {
+      this.peoples = await getEmployeesSimple()
     }
   }
 }

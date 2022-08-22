@@ -49,7 +49,7 @@ export default {
     async getDeaprtments() {
       try {
         const res = await getDeaprtments()
-        this.company = { name: res.companyName, manger: '负责人', id: '' }
+        this.company = { name: res.companyName, manager: '负责人', id: '' }
         this.departs = tranListToTreeData(res.depts, '')
       } catch (error) {
         this.$message.error('获取信息错误！')

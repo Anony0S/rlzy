@@ -5,7 +5,7 @@
     <el-col :span="4">
       <el-row type="flex" justify="end">
         <!-- 两个内容 -->
-        <el-col>{{ treeNode.manger }}</el-col>
+        <el-col>{{ treeNode.manager }}</el-col>
         <el-col>
           <!-- 下拉菜单 element -->
           <el-dropdown @command="operateDeots">
