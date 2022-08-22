@@ -45,10 +45,11 @@ export default {
   methods: {
     operateDeots(type) {
       if (type === 'add') {
-        // TODO: 添加子部门
+        // 添加子部门
         this.$emit('addDept', this.treeNode)
       } else if (type === 'edit') {
-        // TODO: 编辑子部门
+        // 编辑子部门
+        this.$emit('editDept', this.treeNode)
       } else {
         // 删除子部门
         this.$confirm('您确定要删除吗？')

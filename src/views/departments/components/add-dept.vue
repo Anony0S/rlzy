@@ -1,6 +1,11 @@
 <template>
-  <el-dialog title="新增部门" :visible="showDialog">
-    <el-form :model="formData" :rules="rules" label-width="120px">
+  <el-dialog :title="showTitle" :visible="showDialog" @close="bttnCancel">
+    <el-form
+      ref="deptForm"
+      :model="formData"
+      :rules="rules"
+      label-width="120px"
+    >
       <el-form-item label="部门名称" prop="name">
         <el-input
           v-model="formData.name"
@@ -26,6 +31,7 @@
             v-for="item in peoples"
             :key="item.id"
             :label="item.username"
+            :value="item.username"
           />
         </el-select>
       </el-form-item>
@@ -42,15 +48,15 @@
     <el-row slot="footer" type="flex" justify="center">
       <!-- 列被分为24 -->
       <el-col :span="6">
-        <el-button type="primary" size="small">确定</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button type="primary" size="small" @click="btnOK">确定</el-button>
+        <el-button size="small" @click="bttnCancel">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
 </template>
 
 <script>
-import { getDeaprtments } from '@/api/departments'
+import { getDeaprtments, addDepartment } from '@/api/departments'
 import { getEmployeesSimple } from '@/api/employees'
 export default {
   props: {
@@ -113,9 +119,38 @@ export default {
       peoples: []
     }
   },
+  computed: {
+    showTitle() {
+      return this.formData.id ? '新增部门' : '添加子部门'
+    }
+  },
   methods: {
     async getEmployeesSimple() {
       this.peoples = await getEmployeesSimple()
+    },
+    // 确定提交
+    btnOK() {
+      this.$refs.deptForm.validate(async(isOK) => {
+        if (isOK) {
+          await addDepartment({ ...this.formData, pid: this.nodeData.id })
+          this.$emit('addDept')
+          this.$message.success('添加成功！')
+          this.$emit('update:showDialog', false)
+        }
+      })
+    },
+    // 取消按钮
+    bttnCancel() {
+      // 因为 resetFields 只能重置 表单上的数据，非表单上的不能重置
+      this.formData = {
+        name: '',
+        code: '',
+        manager: '',
+        introduce: ''
+      }
+      this.$emit('update:showDialog', false)
+      // 清除校验结果 只能重置定义在 data 中的数据
+      this.$refs.deptForm.resetFields()
     }
   }
 }

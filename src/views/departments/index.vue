@@ -13,10 +13,15 @@
           :tree-node="data"
           @delDepart="getDeaprtments"
           @addDept="addDept(data)"
+          @editDept="editDept"
         />
       </el-tree>
     </el-card>
-    <AddDept :show-dialog="showDialog" :node-data="nodeData" />
+    <AddDept
+      :show-dialog.sync="showDialog"
+      :node-data="nodeData"
+      @addDept="getDeaprtments"
+    />
   </div>
 </template>
 
@@ -56,6 +61,10 @@ export default {
       }
     },
     addDept(node) {
+      this.showDialog = true
+      this.nodeData = node
+    },
+    editDept(node) {
       this.showDialog = true
       this.nodeData = node
     }

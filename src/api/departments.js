@@ -13,3 +13,11 @@ export const delDepartment = (id) =>
     method: 'DELETE',
     url: `/company/department/${id}`
   })
+
+// 新增部门
+export const addDepartment = (data) =>
+  request({
+    method: 'POST',
+    url: '/company/department',
+    data
+  })
