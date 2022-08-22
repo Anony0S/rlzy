@@ -3,7 +3,7 @@ import Layout from '@/layout'
 export default {
   // 路由规则
   path: '/approvals', // 路由地址
-  name: 'approvals', // 给模块的一级路由加一个 name 属性，做权限的时候用
+  // name: 'approvals', // 给模块的一级路由加一个 name 属性，做权限的时候用
   component: Layout,
   children: [
     {

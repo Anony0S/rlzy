@@ -114,7 +114,7 @@ export default {
         this.$router.push('/')
       } catch (error) {
         console.log(error)
-        Message.warning('登录失败！')
+        Message.warning(error)
       } finally {
         this.loading = false
       }

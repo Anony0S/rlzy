@@ -17,8 +17,8 @@ export function parseTime(time, cFormat) {
   if (typeof time === 'object') {
     date = time
   } else {
-    if ((typeof time === 'string')) {
-      if ((/^[0-9]+$/.test(time))) {
+    if (typeof time === 'string') {
+      if (/^[0-9]+$/.test(time)) {
         // support "1548221490638"
         time = parseInt(time)
       } else {
@@ -28,7 +28,7 @@ export function parseTime(time, cFormat) {
       }
     }
 
-    if ((typeof time === 'number') && (time.toString().length === 10)) {
+    if (typeof time === 'number' && time.toString().length === 10) {
       time = time * 1000
     }
     date = new Date(time)
@@ -45,7 +45,9 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -105,7 +107,7 @@ export function param2Obj(url) {
   }
   const obj = {}
   const searchArr = search.split('&')
-  searchArr.forEach(v => {
+  searchArr.forEach((v) => {
     const index = v.indexOf('=')
     if (index !== -1) {
       const name = v.substring(0, index)
@@ -114,4 +116,23 @@ export function param2Obj(url) {
     }
   })
   return obj
+}
+
+// 将列表行的数据转化为树形数据 ===> 使用递归算法、
+// 遍历树形 有一个重点 要先找一个头
+export function tranListToTreeData(list, rootValue) {
+  const arr = []
+  list.forEach((item) => {
+    if (item.pid === rootValue) {
+      // 找到之后就要去找 item 下有没有子节点
+      const children = tranListToTreeData(list, item.id)
+      if (children.length) {
+        // 如果 children 的长度大于0，说明找到了子节点
+        item.children = children
+      }
+      // 将内容加入到数组中
+      arr.push(item)
+    }
+  })
+  return arr
 }
