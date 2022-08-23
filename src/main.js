@@ -23,6 +23,12 @@ import Component from '@/components'
 
 Vue.use(Component)
 
+// 注册全局过滤器
+import * as filters from '@/filters'
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key])
+})
+
 Object.keys(directives).forEach((key) => {
   Vue.directive(key, directives[key])
 })
