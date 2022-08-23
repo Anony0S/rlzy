@@ -1,5 +1,10 @@
 <template>
-  <div class="dashboard-container">登录</div>
+  <div class="dashboard-container">
+    首页
+    <PageTools :show-before="true">
+      <span slot="before">前面部分内容</span>
+    </PageTools>
+  </div>
 </template>
 
 <script>
