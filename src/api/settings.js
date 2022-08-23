@@ -19,3 +19,25 @@ export const delRole = (id) =>
     method: 'DELETE',
     url: `/sys/role/${id}`
   })
+
+// 获取角色详情
+export const getRoleDetalis = (id) =>
+  request({
+    url: `/sys/role/${id}`
+  })
+
+// 更新角色
+export const updateRole = (data) =>
+  request({
+    url: `/sys/role/${data.id}`,
+    method: 'PUT',
+    data
+  })
+
+// 新增角色
+export const addRole = (data) =>
+  request({
+    method: 'POST',
+    url: '/sys/role',
+    data
+  })
