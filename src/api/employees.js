@@ -13,3 +13,10 @@ export const getEmployeesList = (params) =>
     url: '/sys/user',
     params
   })
+
+// 删除员工
+export const delEmployee = (id) =>
+  request({
+    url: `/sys/user/${id}`,
+    method: 'DELETE'
+  })
