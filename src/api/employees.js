@@ -28,3 +28,11 @@ export const addEmplayee = (data) =>
     url: '/sys/user',
     data
   })
+
+// 批量导入员工
+export const importEmployees = (data) =>
+  request({
+    method: 'POST',
+    url: '/sys/user/batch',
+    data
+  })

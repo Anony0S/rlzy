@@ -3,7 +3,11 @@
     <PageTools :show-before="true">
       <span slot="before">共{{ page.total }}条数据</span>
       <template v-slot:after>
-        <el-button size="small" type="warning">导入</el-button>
+        <el-button
+          size="small"
+          type="warning"
+          @click="$router.push('/import')"
+        >导入</el-button>
         <el-button size="small" type="danger">导出</el-button>
         <el-button size="small" type="primary" @click="addEmployee">
           新增员工
@@ -61,7 +65,6 @@
     </el-card>
     <!-- 弹层组件 -->
     <AddEmployee :show-dialog.sync="showDialog" />
-    <UploadExcel />
   </div>
 </template>
 
@@ -121,7 +124,7 @@ export default {
         console.log(error)
       }
     },
-    // TODO: 新增员工
+    // 新增员工
     addEmployee() {
       this.showDialog = true
     }
