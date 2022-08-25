@@ -17,6 +17,14 @@ export const getEmployeesList = (params) =>
 // 删除员工
 export const delEmployee = (id) =>
   request({
-    url: `/sys/user/${id}`,
-    method: 'DELETE'
+    method: 'DELETE',
+    url: `/sys/user/${id}`
+  })
+
+// 新增员工
+export const addEmplayee = (data) =>
+  request({
+    method: 'POST',
+    url: '/sys/user',
+    data
   })

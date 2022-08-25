@@ -5,7 +5,9 @@
       <template v-slot:after>
         <el-button size="small" type="warning">导入</el-button>
         <el-button size="small" type="danger">导出</el-button>
-        <el-button size="small" type="primary">新增员工</el-button>
+        <el-button size="small" type="primary" @click="addEmployee">
+          新增员工
+        </el-button>
       </template>
     </PageTools>
     <!-- 防止表格和分页 -->
@@ -57,14 +59,19 @@
         />
       </el-row>
     </el-card>
+    <!-- 弹层组件 -->
+    <AddEmployee :show-dialog.sync="showDialog" />
+    <UploadExcel />
   </div>
 </template>
 
 <script>
 import { getEmployeesList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
+import AddEmployee from './components/add-employee.vue'
 export default {
   name: 'Employees',
+  components: { AddEmployee },
   data() {
     return {
       // 员工列表
@@ -76,7 +83,9 @@ export default {
         total: 0
       },
       // 加载中
-      loading: false
+      loading: false,
+      // 显示弹层
+      showDialog: false
     }
   },
   created() {
@@ -98,7 +107,7 @@ export default {
     },
     // 格式化聘用形式
     formatterEmployment(row, column, cellValue, index) {
-      const obj = EmployeeEnum.hireType.find((item) => item.id === cellValue)
+      const obj = EmployeeEnum.hireType.find((item) => item.id === +cellValue)
       return obj ? obj.value : '未知'
     },
     // 删除员工
@@ -111,6 +120,10 @@ export default {
       } catch (error) {
         console.log(error)
       }
+    },
+    // TODO: 新增员工
+    addEmployee() {
+      this.showDialog = true
     }
   }
 }
