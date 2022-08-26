@@ -8,7 +8,11 @@
           type="warning"
           @click="$router.push('/import')"
         >导入</el-button>
-        <el-button size="small" type="danger">导出</el-button>
+        <el-button
+          size="small"
+          type="danger"
+          @click="exployExecl"
+        >导出</el-button>
         <el-button size="small" type="primary" @click="addEmployee">
           新增员工
         </el-button>
@@ -72,6 +76,7 @@
 import { getEmployeesList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './components/add-employee.vue'
+import { formatDate } from '@/filters'
 export default {
   name: 'Employees',
   components: { AddEmployee },
@@ -102,6 +107,11 @@ export default {
       this.page.total = total
       this.list = rows
       this.loading = false
+      // 当前页没有数据时
+      if (total !== 0 && rows.length === 0) {
+        this.page.page = this.page.page - 1
+        this.getEmployeesList()
+      }
     },
     // 改变页面调用
     changePage(curtPage) {
@@ -127,6 +137,54 @@ export default {
     // 新增员工
     addEmployee() {
       this.showDialog = true
+    },
+    // 导出 excel
+    async exployExecl() {
+      const headers = {
+        手机号: 'mobile',
+        姓名: 'username',
+        入职日期: 'timeOfEntry',
+        聘用形式: 'formOfEmployment',
+        转正日期: 'correctionTime',
+        工号: 'workNumber',
+        部门: 'departmentName'
+      }
+      const { rows } = await getEmployeesList({
+        page: 1,
+        size: this.page.total
+      })
+      const data = this.formatJson(headers, rows)
+      const excel = await import('@/vendor/Export2Excel')
+      excel.export_json_to_excel({
+        header: Object.keys(headers),
+        data,
+        filename: '员工列表'
+      })
+    },
+    // 格式化数据
+    formatJson(headers, rows) {
+      return rows.map((obj) => {
+        return Object.keys(headers).map((key) => {
+          if (
+            headers[key] === 'timeOfEntry' ||
+            headers[key] === 'correctionTime'
+          ) {
+            return formatDate(obj[headers[key]])
+          } else if (headers[key] === 'formOfEmployment') {
+            const res = EmployeeEnum.hireType.find(
+              (item) => item.id === +obj[headers[key]]
+            )
+            return res ? res.value : '未知'
+          }
+          return obj[headers[key]]
+        })
+      })
+      // reduce 方法
+      // const arr = rows.reduce((arr, item) => {
+      //   const newArr = Object.keys(headers).map((key) => item[headers[key]])
+      //   arr.push(newArr)
+      //   return arr
+      // }, [])
     }
   }
 }
