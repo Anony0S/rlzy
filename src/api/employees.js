@@ -36,3 +36,11 @@ export const importEmployees = (data) =>
     url: '/sys/user/batch',
     data
   })
+
+// 保存员工基本信息
+export const saveUserDetailById = (data) =>
+  request({
+    method: 'PUT',
+    url: `/sys/user/${data.id}`,
+    data
+  })

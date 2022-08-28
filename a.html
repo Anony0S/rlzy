@@ -10,54 +10,64 @@
 
 <body>
 	<script>
-		const arr = [
-			{
-				id: '1',
-				pid: '',
-				name: '外层1'
-			},
-			{
-				id: '2',
-				pid: '',
-				name: '外层2'
-			},
-			{
-				id: '3',
-				pid: '',
-				name: '外层3'
-			},
-			{
-				id: '4',
-				pid: '1',
-				name: '外层1-1'
-			},
-			{
-				id: '5',
-				pid: '1',
-				name: '外层1-2'
-			},
-			{
-				id: '6',
-				pid: '2',
-				name: '外层2-1'
-			},
+		// const arr = [
+		// 	{
+		// 		id: '1',
+		// 		pid: '',
+		// 		name: '外层1'
+		// 	},
+		// 	{
+		// 		id: '2',
+		// 		pid: '',
+		// 		name: '外层2'
+		// 	},
+		// 	{
+		// 		id: '3',
+		// 		pid: '',
+		// 		name: '外层3'
+		// 	},
+		// 	{
+		// 		id: '4',
+		// 		pid: '1',
+		// 		name: '外层1-1'
+		// 	},
+		// 	{
+		// 		id: '5',
+		// 		pid: '1',
+		// 		name: '外层1-2'
+		// 	},
+		// 	{
+		// 		id: '6',
+		// 		pid: '2',
+		// 		name: '外层2-1'
+		// 	},
 
-		]
-		// 递归整理
-		function settle(list, rootPid) {
-			const arr = [];
-			list.forEach(item => {
-				if (item.pid === rootPid) {
-					const children = settle(list, item.id)
-					if (children.length) {
-						item.children = children
-					}
-					arr.push(item)
-				}
-			});
+		// ]
+		// // 递归整理
+		// function settle(list, rootPid) {
+		// 	const arr = [];
+		// 	list.forEach(item => {
+		// 		if (item.pid === rootPid) {
+		// 			const children = settle(list, item.id)
+		// 			if (children.length) {
+		// 				item.children = children
+		// 			}
+		// 			arr.push(item)
+		// 		}
+		// 	});
+		// 	return arr
+		// }
+		// console.log(settle(arr, ''));
+
+		let x = { key: '键', value: '值' }
+		let y = [{ 键: 3, 值: 4 }, { 键: 3, 值: 4 }]
+
+		const aaa = y.map((ele) => {
+			const arr = {}
+			Object.keys(x).forEach(key => arr[key] = ele[x[key]])
 			return arr
-		}
-		console.log(settle(arr, ''));
+		})
+		console.log(aaa);
 	</script>
 </body>
 

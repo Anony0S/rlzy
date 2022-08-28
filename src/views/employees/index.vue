@@ -43,7 +43,11 @@
         </el-table-column>
         <el-table-column label="操作" sortable="" fixed="right" width="280">
           <template slot-scope="{ row }">
-            <el-button type="text" size="small">查看</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="$router.push(`/employees/detail/${row.id}`)"
+            >查看</el-button>
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
@@ -128,6 +132,11 @@ export default {
       try {
         await this.$confirm('您确定要删除吗？')
         await delEmployee(id)
+        // 批量删除
+        // const { rows } = await getEmployeesList({ page: 1, size: 1000 })
+        // for (let i = 1; i < 1000; i++) {
+        //   delEmployee(rows[i].id)
+        // }
         this.$message.success('删除成功！')
         this.getEmployeesList()
       } catch (error) {
