@@ -69,6 +69,11 @@
         </el-col>
       </el-row>
     </el-form>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
     <!-- 基础信息 -->
     <el-form label-width="220px">
       <div class="block">
@@ -388,6 +393,12 @@
 
 <script>
 import EmployeeEnum from '@/api/constant/employees'
+import {
+  getPersonalDetail,
+  updatePersonal,
+  saveUserDetailById
+} from '@/api/employees'
+import { getDetaliInfoById } from '@/api/user'
 
 export default {
   name: 'UserInfo',
@@ -459,6 +470,27 @@ export default {
         proofOfDepartureOfFormerCompany: '', // 前公司离职证明
         remarks: '' // 备注
       }
+    }
+  },
+  created() {
+    this.getPersonalDetail()
+    this.getUserDetailById()
+  },
+  methods: {
+    async getPersonalDetail() {
+      this.formData = await getPersonalDetail(this.userId) // 获取员工数据
+    },
+    async savePersonal() {
+      await updatePersonal(this.formData)
+      this.$message.success('保存成功')
+    },
+    async saveUser() {
+      //  调用父组件
+      await saveUserDetailById(this.userInfo)
+      this.$message.success('保存成功')
+    },
+    async getUserDetailById() {
+      this.userInfo = await getDetaliInfoById(this.userId)
     }
   }
 }
