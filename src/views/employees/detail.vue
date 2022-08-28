@@ -37,10 +37,14 @@
         </el-tab-pane>
 
         <!-- 中 -->
-        <el-tab-pane label="个人详情"> 个人详情 </el-tab-pane>
+        <el-tab-pane label="个人详情">
+          <component :is="userDetail" />
+        </el-tab-pane>
 
         <!-- 右 -->
-        <el-tab-pane label="岗位信息"> 岗位信息 </el-tab-pane>
+        <el-tab-pane label="岗位信息">
+          <component :is="JobInfo" />
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -49,9 +53,13 @@
 <script>
 import { getDetaliInfoById } from '@/api/user'
 import { saveUserDetailById } from '@/api/employees'
+import UserInfo from './components/user-info.vue'
+import JobInfo from './components/job-info.vue'
+
 export default {
   data() {
     return {
+      // 修改密码页面信息
       userInfo: {
         username: '',
         // 避免把读出来的加密的密码给赋值上去
@@ -66,7 +74,10 @@ export default {
           { required: true, trigger: 'blur', message: '请填写密码' },
           { min: 6, max: 9, trigger: 'blur', message: '密码要求6-9位' }
         ]
-      }
+      },
+      // 动态组件
+      userDetail: UserInfo,
+      JobInfo
     }
   },
   created() {
