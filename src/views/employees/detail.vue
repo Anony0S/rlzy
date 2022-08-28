@@ -37,12 +37,12 @@
         </el-tab-pane>
 
         <!-- 中 -->
-        <el-tab-pane label="个人详情">
+        <el-tab-pane label="个人详情" :lazy="true">
           <component :is="userDetail" />
         </el-tab-pane>
 
         <!-- 右 -->
-        <el-tab-pane label="岗位信息">
+        <el-tab-pane label="岗位信息" :lazy="true">
           <component :is="JobInfo" />
         </el-tab-pane>
       </el-tabs>

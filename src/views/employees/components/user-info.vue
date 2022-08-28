@@ -472,7 +472,7 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.getPersonalDetail()
     this.getUserDetailById()
   },

@@ -4,6 +4,7 @@
     <PageTools :show-before="true">
       <span slot="before">前面部分内容</span>
     </PageTools>
+    <ImgUpload />
   </div>
 </template>
 
