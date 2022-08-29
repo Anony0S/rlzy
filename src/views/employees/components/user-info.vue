@@ -486,7 +486,7 @@ export default {
       }
     },
     async savePersonal() {
-      // TODO: 判断是否有正在上传的图片
+      //  判断是否有正在上传的图片
       console.log(this.$refs.employeesHeader.showProgress)
       if (this.$refs.employeesHeader.showProgress) {
         return this.$message.warning('当前有在上传的图片，请稍后···')

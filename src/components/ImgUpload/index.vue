@@ -65,7 +65,7 @@ export default {
       // 添加文件
       this.fileList = fileList
     },
-    // TODO: 自定义上传动作，有个参数 里面有 file 对象，是需要上传到腾讯云服务器的内容
+    // 自定义上传动作，有个参数 里面有 file 对象，是需要上传到腾讯云服务器的内容
     oRequest(params) {
       // console.log(params.file)
       this.percent = 0
