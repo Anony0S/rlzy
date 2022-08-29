@@ -3,16 +3,12 @@
     <PageTools :show-before="true">
       <span slot="before">共{{ page.total }}条数据</span>
       <template v-slot:after>
-        <el-button
-          size="small"
-          type="warning"
-          @click="$router.push('/import')"
-        >导入</el-button>
-        <el-button
-          size="small"
-          type="danger"
-          @click="exployExecl"
-        >导出</el-button>
+        <el-button size="small" type="warning" @click="$router.push('/import')">
+          导入
+        </el-button>
+        <el-button size="small" type="danger" @click="exployExecl">
+          导出
+        </el-button>
         <el-button size="small" type="primary" @click="addEmployee">
           新增员工
         </el-button>
@@ -23,6 +19,22 @@
       <el-table border :data="list">
         <el-table-column type="index" label="序号" sortable="" />
         <el-table-column prop="username" label="姓名" sortable="" />
+        <el-table-column label="头像" align="center">
+          <template slot-scope="{ row }">
+            <img
+              slot="reference"
+              v-imgerror="require('@/assets/common/bigUserHeader.png')"
+              :src="row.staffPhoto"
+              style="
+                border-radius: 50%;
+                width: 100px;
+                height: 100px;
+                padding: 10px;
+              "
+              alt=""
+            >
+          </template>
+        </el-table-column>
         <el-table-column prop="workNumber" label="工号" sortable="" />
         <el-table-column
           prop="formOfEmployment"
