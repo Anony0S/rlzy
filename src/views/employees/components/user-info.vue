@@ -19,6 +19,14 @@
             />
           </el-form-item>
         </el-col>
+        <!-- 个人信息打印 -->
+        <el-row type="flex" justify="end">
+          <el-tooltip content="打印个人基本信息">
+            <router-link :to="`/employees/print/${userId}?type=personal`">
+              <i class="el-icon-printer" />
+            </router-link>
+          </el-tooltip>
+        </el-row>
       </el-row>
       <!-- 姓名 部门 -->
       <el-row class="inline-info">

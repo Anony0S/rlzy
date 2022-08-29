@@ -46,6 +46,8 @@
           <component :is="JobInfo" />
         </el-tab-pane>
       </el-tabs>
+
+      <!-- 打印信息 -->
     </el-card>
   </div>
 </template>
