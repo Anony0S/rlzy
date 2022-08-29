@@ -30,8 +30,9 @@
                 width: 100px;
                 height: 100px;
                 padding: 10px;
+                cursor: pointer;
               "
-              alt=""
+              @click="showQrCode(row.staffPhoto)"
             >
           </template>
         </el-table-column>
@@ -59,16 +60,16 @@
               type="text"
               size="small"
               @click="$router.push(`/employees/detail/${row.id}`)"
-            >查看</el-button>
+            >
+              查看
+            </el-button>
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
             <el-button type="text" size="small">角色</el-button>
-            <el-button
-              type="text"
-              size="small"
-              @click="delEmployee(row.id)"
-            >删除</el-button>
+            <el-button type="text" size="small" @click="delEmployee(row.id)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -85,6 +86,13 @@
     </el-card>
     <!-- 弹层组件 -->
     <AddEmployee :show-dialog.sync="showDialog" />
+    <!-- 二维码弹层 -->
+    <el-dialog title="扫码查看图像" :visible.sync="showQc" width="20%">
+      <!-- @close="closeQc" -->
+      <el-row type="flex" justify="center">
+        <canvas ref="myCanvas" />
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -93,6 +101,7 @@ import { getEmployeesList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './components/add-employee.vue'
 import { formatDate } from '@/filters'
+import QrCode from 'qrcode'
 export default {
   name: 'Employees',
   components: { AddEmployee },
@@ -109,7 +118,9 @@ export default {
       // 加载中
       loading: false,
       // 显示弹层
-      showDialog: false
+      showDialog: false,
+      // 显示二维码
+      showQc: false
     }
   },
   created() {
@@ -206,6 +217,18 @@ export default {
       //   arr.push(newArr)
       //   return arr
       // }, [])
+    },
+    // 显示二维码
+    showQrCode(url) {
+      // 有 url 才进行渲染
+      if (url) {
+        this.showQc = true
+        // 页面渲染为异步行为
+        this.$nextTick(() => {
+          // 如果转化的二维码后面信息是一个地址的话，就会跳转到该地址，如果不是就会显示内容
+          QrCode.toCanvas(this.$refs.myCanvas, url)
+        })
+      } else this.$message.warning('该用户还未上传头像！')
     }
   }
 }

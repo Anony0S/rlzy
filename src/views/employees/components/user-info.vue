@@ -487,15 +487,14 @@ export default {
     },
     async savePersonal() {
       //  判断是否有正在上传的图片
-      console.log(this.$refs.employeesHeader.showProgress)
-      if (this.$refs.employeesHeader.showProgress) {
+      if (this.$refs.employeesPic.loading) {
         return this.$message.warning('当前有在上传的图片，请稍后···')
       }
       await updatePersonal(this.formData)
       this.$message.success('保存成功')
     },
     async saveUser() {
-      if (this.$refs.employeesPic.showProgress) {
+      if (this.$refs.employeesHeader.loading) {
         return this.$message.warning('当前有在上传的图片，请稍后···')
       }
       //  调用父组件
