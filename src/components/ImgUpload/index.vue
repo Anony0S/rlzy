@@ -1,11 +1,11 @@
 <template>
   <div>
     <!-- action为必选参数，不写报错 -->
-    <!-- v-loading="loading"
+    <el-upload
+      v-loading="loading"
       element-loading-text="上传中"
       element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(0,0,0,0.8)" -->
-    <el-upload
+      element-loading-background="rgba(0,0,0,0.8)"
       list-type="picture-card"
       :file-list="fileList"
       action="#"
@@ -94,12 +94,15 @@ export default {
             if (err || data.statusCode !== 200) {
               return this.$message.error('上传失败，请重试！')
             }
-            // TODO: 上传成功
-            this.fileList = this.fileList.map((item) => {
-              if (item.uid === this.uploadUid) {
-                return { url: 'https://' + data.Location, upload: true }
-              }
-              return item
+            // 上传成功： 内部处理 list 方式
+            // this.fileList = this.fileList.map((item) => {
+            //   if (item.uid === this.uploadUid) {
+            //     return { url: 'https://' + data.Location, upload: true }
+            //   }
+            //   return item
+            // })
+            this.$emit('onSuccess', {
+              url: 'https://' + data.Location
             })
             this.showProgress = false
             this.loading = false
@@ -142,5 +145,10 @@ export default {
 <style lang="scss">
 .hideAdd .el-upload--picture-card {
   display: none;
+}
+.el-loading-mask {
+  width: 148px;
+  height: 148px;
+  border-radius: 10px;
 }
 </style>

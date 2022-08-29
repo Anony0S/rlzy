@@ -58,6 +58,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
+            <ImgUpload ref="employeesHeader" @onSuccess="headerImgSuccess" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -96,6 +97,7 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <ImgUpload ref="employeesPic" @onSuccess="employeesPicSuccess" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -479,18 +481,43 @@ export default {
   methods: {
     async getPersonalDetail() {
       this.formData = await getPersonalDetail(this.userId) // 获取员工数据
+      if (this.formData.staffPhoto) {
+        this.$refs.employeesPic.fileList.push({ url: this.formData.staffPhoto })
+      }
     },
     async savePersonal() {
+      // TODO: 判断是否有正在上传的图片
+      console.log(this.$refs.employeesHeader.showProgress)
+      if (this.$refs.employeesHeader.showProgress) {
+        return this.$message.warning('当前有在上传的图片，请稍后···')
+      }
       await updatePersonal(this.formData)
       this.$message.success('保存成功')
     },
     async saveUser() {
+      if (this.$refs.employeesPic.showProgress) {
+        return this.$message.warning('当前有在上传的图片，请稍后···')
+      }
       //  调用父组件
       await saveUserDetailById(this.userInfo)
       this.$message.success('保存成功')
     },
     async getUserDetailById() {
       this.userInfo = await getDetaliInfoById(this.userId)
+      if (this.userInfo.staffPhoto) {
+        // 这里我们赋值，同时需要给赋值的地址一个标记 upload: true
+        this.$refs.employeesHeader.fileList.push({
+          url: this.userInfo.staffPhoto
+        })
+      }
+    },
+    // 头像图片上传成功
+    headerImgSuccess({ url }) {
+      this.userInfo.staffPhoto = url
+    },
+    // 员工照片上传成功
+    employeesPicSuccess({ url }) {
+      this.formData.staffPhoto = url
     }
   }
 }
