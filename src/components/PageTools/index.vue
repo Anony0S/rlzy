@@ -3,7 +3,7 @@
     <el-row type="flex" justify="space-between" align="middle">
       <el-col>
         <div v-if="showBefore" class="before">
-          <i class="el-icon-info" />
+          <i v-if="showIcon" class="el-icon-info" />
           <!-- 定义前面得插槽 -->
           <slot name="before" />
         </div>
@@ -20,10 +20,15 @@
 
 <script>
 export default {
+  name: 'PageTools',
   props: {
     showBefore: {
       type: Boolean,
-      default: false
+      default: true
+    },
+    showIcon: {
+      type: Boolean,
+      default: true
     }
   }
 }
