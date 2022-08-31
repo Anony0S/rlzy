@@ -66,7 +66,9 @@
             <el-button type="text" size="small">转正</el-button>
             <el-button type="text" size="small">调岗</el-button>
             <el-button type="text" size="small">离职</el-button>
-            <el-button type="text" size="small">角色</el-button>
+            <el-button type="text" size="small" @click="asRole(row.id)">
+              角色
+            </el-button>
             <el-button type="text" size="small" @click="delEmployee(row.id)">
               删除
             </el-button>
@@ -93,18 +95,25 @@
         <canvas ref="myCanvas" />
       </el-row>
     </el-dialog>
+    <!-- 角色弹层 -->
+    <AssignRole
+      ref="assignRole"
+      v-model="showRoleDialog"
+      :user-id="currentUserId"
+    />
   </div>
 </template>
 
 <script>
-import { getEmployeesList, delEmployee } from '@/api/employees'
-import EmployeeEnum from '@/api/constant/employees'
 import AddEmployee from './components/add-employee.vue'
+import AssignRole from './components/assign-role.vue'
+import { getEmployeesList, delEmployee } from '@/api/employees'
 import { formatDate } from '@/filters'
+import EmployeeEnum from '@/api/constant/employees'
 import QrCode from 'qrcode'
 export default {
   name: 'Employees',
-  components: { AddEmployee },
+  components: { AddEmployee, AssignRole },
   data() {
     return {
       // 员工列表
@@ -120,7 +129,11 @@ export default {
       // 显示弹层
       showDialog: false,
       // 显示二维码
-      showQc: false
+      showQc: false,
+      // 显示角色弹层
+      showRoleDialog: false,
+      // 用户ID
+      currentUserId: ''
     }
   },
   created() {
@@ -229,6 +242,13 @@ export default {
           QrCode.toCanvas(this.$refs.myCanvas, url)
         })
       } else this.$message.warning('该用户还未上传头像！')
+    },
+    // 角色操作
+    async asRole(id) {
+      // id: 当前用户的id
+      this.currentUserId = id
+      await this.$refs.assignRole.getRoleList()
+      this.showRoleDialog = true
     }
   }
 }
