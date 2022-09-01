@@ -29,12 +29,16 @@
             <el-table-column label="描述" prop="description" align="center" />
             <el-table-column label="操作" align="center">
               <template slot-scope="{ row }">
-                <el-button size="small" type="success">分配权限</el-button>
+                <el-button size="small" type="success" @click="btnManager(row)">
+                  分配权限
+                </el-button>
                 <el-button
                   size="small"
                   type="primary"
                   @click="editRole(row.id)"
-                >编辑</el-button>
+                >
+                  编辑
+                </el-button>
                 <el-button size="small" type="danger" @click="delRole(row.id)">
                   删除
                 </el-button>
@@ -128,6 +132,12 @@
         </el-row>
       </el-dialog>
     </el-card>
+
+    <!-- 分配权限弹层 -->
+    <ManagerPermission
+      ref="ManagerPermission"
+      :show-manager-dialog.sync="showManagerDialog"
+    />
   </div>
 </template>
 
@@ -141,8 +151,11 @@ import {
   addRole
 } from '@/api/settings'
 import { mapGetters } from 'vuex'
+import ManagerPermission from './components/manager-permission.vue'
+
 export default {
   name: 'Setting',
+  components: { ManagerPermission },
   data() {
     return {
       // 表格数据
@@ -165,16 +178,21 @@ export default {
       // 校验规则
       rules: {
         name: [{ required: true, trigger: 'blur', message: '角色名称必填！' }]
-      }
+      },
+      // 分配权限弹层
+      showManagerDialog: false
     }
   },
+
   computed: {
     ...mapGetters(['companyID'])
   },
+
   created() {
     this.getRoles()
     this.getCompanyInfo()
   },
+
   methods: {
     // 获取角色列表
     async getRoles() {
@@ -208,7 +226,7 @@ export default {
       this.roleForm = await getRoleDetalis(id)
       this.showDialog = true
     },
-    // TODO: 确定按钮
+    // 确定按钮
     async btnOK() {
       try {
         this.$refs.roleForm.validate()
@@ -227,7 +245,6 @@ export default {
         console.log(error)
       }
     },
-
     // 关闭弹层
     closeDialog() {
       this.showDialog = false
@@ -236,6 +253,11 @@ export default {
         description: ''
       }
       this.$refs.roleForm.resetFields()
+    },
+    // 分配权限按钮
+    async btnManager(row) {
+      await this.$refs.ManagerPermission.getPermissionList(row.id)
+      this.showManagerDialog = true
     }
   }
 }

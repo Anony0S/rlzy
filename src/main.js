@@ -38,6 +38,10 @@ Object.keys(directives).forEach((key) => {
 import Print from 'vue-print-nb'
 Vue.use(Print)
 
+// 注册全局混入
+import myMixin from '@/mixin/checkPromission'
+Vue.mixin(myMixin)
+
 if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()

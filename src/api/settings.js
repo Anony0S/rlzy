@@ -20,9 +20,10 @@ export const delRole = (id) =>
     url: `/sys/role/${id}`
   })
 
-// 获取角色详情
+// 根据 ID 获取角色详情
 export const getRoleDetalis = (id) =>
   request({
+    method: 'GET',
     url: `/sys/role/${id}`
   })
 
@@ -41,3 +42,12 @@ export const addRole = (data) =>
     url: '/sys/role',
     data
   })
+
+// 给角色分配权限
+export function assignPerm(data) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data
+  })
+}

@@ -20,5 +20,6 @@ export const getUserInfo = () =>
 // 通过ID获取用户详细信息
 export const getDetaliInfoById = (id) =>
   request({
+    method: 'GET',
     url: `/sys/user/${id}`
   })

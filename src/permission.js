@@ -30,7 +30,12 @@ router.beforeEach(async(to, from, next) => {
       // 只有放行的时候才获取用户资料
       if (!store.getters.userId) {
         // 如果没有 userId 则获取用户资料, 注意进行同步操作
-        await store.dispatch('user/getUserInfo')
+        const {
+          roles: { menus }
+        } = await store.dispatch('user/getUserInfo')
+        store.dispatch('permission/filterRoutters', menus)
+        // 明确要去往的地址，不然造成白屏（动态路由缺陷）
+        next(to.path)
       }
       next()
     }

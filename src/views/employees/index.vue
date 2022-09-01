@@ -3,7 +3,12 @@
     <PageTools :show-before="true">
       <span slot="before">共{{ page.total }}条数据</span>
       <template v-slot:after>
-        <el-button size="small" type="warning" @click="$router.push('/import')">
+        <el-button
+          v-if="checkPermission('EMPLOYEES_EXPORT_ENTRY')"
+          size="small"
+          type="warning"
+          @click="$router.push('/import')"
+        >
           导入
         </el-button>
         <el-button size="small" type="danger" @click="exployExecl">
