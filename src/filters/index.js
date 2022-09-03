@@ -35,16 +35,20 @@ export function timeAgo(time) {
  */
 export function numberFormatter(num, digits) {
   const si = [
-    { value: 1E18, symbol: 'E' },
-    { value: 1E15, symbol: 'P' },
-    { value: 1E12, symbol: 'T' },
-    { value: 1E9, symbol: 'G' },
-    { value: 1E6, symbol: 'M' },
-    { value: 1E3, symbol: 'k' }
+    { value: 1e18, symbol: 'E' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e9, symbol: 'G' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e3, symbol: 'k' }
   ]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
-      return (num / si[i].value).toFixed(digits).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[i].symbol
+      return (
+        (num / si[i].value)
+          .toFixed(digits)
+          .replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[i].symbol
+      )
     }
   }
   return num.toString()
@@ -55,7 +59,9 @@ export function numberFormatter(num, digits) {
  * @param {number} num
  */
 export function toThousandFilter(num) {
-  return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+  return (+num || 0)
+    .toString()
+    .replace(/^-?\d+/g, (m) => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 
 /**
@@ -154,30 +160,31 @@ export function getNowFormatDate() {
 }
 /* 数字 格式化 */
 export function nFormatter(num, digits) {
-  const si = [{
-    value: 1e18,
-    symbol: 'E'
-  },
-  {
-    value: 1e15,
-    symbol: 'P'
-  },
-  {
-    value: 1e12,
-    symbol: 'T'
-  },
-  {
-    value: 1e9,
-    symbol: 'G'
-  },
-  {
-    value: 1e6,
-    symbol: 'M'
-  },
-  {
-    value: 1e3,
-    symbol: 'k'
-  }
+  const si = [
+    {
+      value: 1e18,
+      symbol: 'E'
+    },
+    {
+      value: 1e15,
+      symbol: 'P'
+    },
+    {
+      value: 1e12,
+      symbol: 'T'
+    },
+    {
+      value: 1e9,
+      symbol: 'G'
+    },
+    {
+      value: 1e6,
+      symbol: 'M'
+    },
+    {
+      value: 1e3,
+      symbol: 'k'
+    }
   ]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
@@ -200,7 +207,7 @@ export function html2Text(val) {
 export function toThousandslsFilter(num) {
   return (+num || 0)
     .toString()
-    .replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+    .replace(/^-?\d+/g, (m) => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 // 验证手机号
 export function checkPhone(rule, value, callback) {
@@ -264,7 +271,8 @@ export function checkQq(value, callback) {
 }
 // 银行卡号
 export function formatBankNo(BankNo, callback) {
-  var strBin = '10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99'
+  var strBin =
+    '10,18,30,35,37,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,58,60,62,65,68,69,84,87,88,94,95,98,99'
   return strBin
 }
 export function getStrleng(str, max) {
@@ -280,9 +288,7 @@ export function getStrleng(str, max) {
 export function updatedImg(file, obj, callback, func) {
   if (file.size < 10100000) {
     var fileName = file.name
-    var suffix = fileName
-      .substring(fileName.lastIndexOf('.') + 1)
-      .toUpperCase()
+    var suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase()
     if (
       suffix === 'PDF' ||
       suffix === 'JPG' ||
@@ -306,9 +312,7 @@ export function updatedImg(file, obj, callback, func) {
 export function updatedFile(file, obj, callback, func) {
   if (file.size < 10100000) {
     var fileName = file.name
-    var suffix = fileName
-      .substring(fileName.lastIndexOf('.') + 1)
-      .toUpperCase()
+    var suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase()
     if (
       suffix === 'DOC' ||
       suffix === 'DOCX' ||
@@ -333,13 +337,8 @@ export function updatedFile(file, obj, callback, func) {
 export function importFile(file, obj, callback, func) {
   if (file.size < 10100000) {
     var fileName = file.name
-    var suffix = fileName
-      .substring(fileName.lastIndexOf('.') + 1)
-      .toUpperCase()
-    if (
-      suffix === 'XLS' ||
-      suffix === 'XLSX'
-    ) {
+    var suffix = fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase()
+    if (suffix === 'XLS' || suffix === 'XLSX') {
       return true
     } else {
       var tipType = '文件类型不正确,请重新上传'
@@ -361,7 +360,10 @@ export function formatDate(date, fmt = 'yyyy-MM-dd') {
     date = new Date(date)
   }
   if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+    fmt = fmt.replace(
+      RegExp.$1,
+      (date.getFullYear() + '').substr(4 - RegExp.$1.length)
+    )
   }
   const o = {
     'M+': date.getMonth() + 1,
@@ -373,7 +375,10 @@ export function formatDate(date, fmt = 'yyyy-MM-dd') {
   for (const k in o) {
     if (new RegExp(`(${k})`).test(fmt)) {
       const str = o[k] + ''
-      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? str : padLeftZero(str))
+      fmt = fmt.replace(
+        RegExp.$1,
+        RegExp.$1.length === 1 ? str : padLeftZero(str)
+      )
     }
   }
   return fmt
@@ -397,3 +402,10 @@ export function getBlob(response) {
 export function imgHandle(obj) {
   return window.URL.createObjectURL(obj)
 }
+
+// 获取小数点后1位
+export function getIntegerPoint(e) {
+  return +e.toFixed(1)
+}
+
+export function getInteger() {}
