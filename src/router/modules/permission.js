@@ -3,13 +3,13 @@ import Layout from '@/layout'
 export default {
   // 路由规则
   path: '/permission', // 路由地址
-  name: 'permission', // 给模块的一级路由加一个 name 属性，做权限的时候用
   component: Layout,
   meta: { id: 'permissions' },
   children: [
     {
       // 二级路由的 path 什么都不用写，此时表示二级路由的默认路由
       path: '',
+      name: 'permissions', // 给模块的一级路由加一个 name 属性，做权限的时候用
       component: () => import('@/views/permission'),
       // 路由元信息
       meta: {

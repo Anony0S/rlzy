@@ -9,6 +9,7 @@
     <div class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <navbar />
+        <TagsView />
       </div>
       <app-main />
     </div>

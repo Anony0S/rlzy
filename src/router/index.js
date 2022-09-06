@@ -59,7 +59,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'dashboard',
-        name: 'Dashboard',
+        name: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         meta: { title: '首页', icon: 'dashboard' }
       }
@@ -93,8 +93,13 @@ export const asyncRoutes = [
 
 const createRouter = () =>
   new Router({
-    // mode: 'history', // require service support
-    scrollBehavior: () => ({ y: 0 }),
+    mode: 'history', // require service support
+    scrollBehavior: (to, from, savePosition) => {
+      if (to.path === '/dashboard') {
+        return { y: 100 }
+      }
+      return { y: 0 }
+    },
     // 将静态路由和动态路由临时合并
     routes: [...constantRoutes]
   })
